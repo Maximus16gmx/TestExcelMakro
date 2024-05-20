@@ -13,7 +13,7 @@ Sub ExportiereBereichZuMail(rangeAddress As String, recipient As String, sheetNu
     Set rangeToPrint = Worksheet.Range(rangeAddress)
     
     ' Create a temporary file path with the current date and time
-    currentDateTime = Format(Now, "yyyy-mm-dd_hh-nn")
+    currentDateTime = Format(Now, "dd-mm-yyyy_hh-nn")
     tempFilePath = Environ$("temp") & "\"
     tempFileName = "Bestellung_" & currentDateTime & ".pdf"
     tempFileFullPath = tempFilePath & tempFileName
@@ -106,3 +106,4 @@ Sub ErstelleAlleButtons()
     
     ' Weitere Buttons können hier hinzugefügt werden
 End Sub
+
