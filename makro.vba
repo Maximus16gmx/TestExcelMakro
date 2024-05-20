@@ -1,23 +1,25 @@
 Sub ExportiereBereichZuMail(rangeAddress As String, recipient As String, sheetNumber As Integer)
     Dim outlookApp As Object
     Dim outlookMail As Object
-    Dim worksheet As worksheet
-    Dim rangeToSend As Range
+    Dim Worksheet As Worksheet
+    Dim rangeToPrint As Range
     Dim tempFilePath As String
     Dim tempFileName As String
     Dim tempFileFullPath As String
+    Dim currentDateTime As String
 
-    ' Set the worksheet and range to send
-    Set worksheet = ThisWorkbook.Sheets(sheetNumber)
-    Set rangeToSend = worksheet.Range(rangeAddress)
+    ' Set the worksheet and range to print
+    Set Worksheet = ThisWorkbook.Sheets(sheetNumber)
+    Set rangeToPrint = Worksheet.Range(rangeAddress)
     
-    ' Create a temporary file path
+    ' Create a temporary file path with the current date and time
+    currentDateTime = Format(Now, "yyyy-mm-dd_hh-nn")
     tempFilePath = Environ$("temp") & "\"
-    tempFileName = "Bestellung.pdf"
+    tempFileName = "Bestellung_" & currentDateTime & ".pdf"
     tempFileFullPath = tempFilePath & tempFileName
     
     ' Export the range to PDF
-    rangeToSend.ExportAsFixedFormat Type:=xlTypePDF, Filename:=tempFileFullPath, Quality:=xlQualityStandard, IncludeDocProperties:=True, IgnorePrintAreas:=False, OpenAfterPublish:=False
+    rangeToPrint.ExportAsFixedFormat Type:=xlTypePDF, Filename:=tempFileFullPath, Quality:=xlQualityStandard, IncludeDocProperties:=True, IgnorePrintAreas:=False, OpenAfterPublish:=False
     
     ' Create an Outlook application and email
     Set outlookApp = CreateObject("Outlook.Application")
@@ -26,8 +28,11 @@ Sub ExportiereBereichZuMail(rangeAddress As String, recipient As String, sheetNu
     ' Configure the email
     With outlookMail
         .To = recipient
-        .Subject = "Bestellung"
-        .Body = "Hallo Leo," & vbNewLine & vbNewLine & "im Anhang findest du die Bestellung." & vbNewLine & vbNewLine & "Grüße" & vbNewLine & "Packer Team"
+        .Subject = "Automated Email with Excel Range"
+        .Body = "Hello," & vbCrLf & vbCrLf & _
+                "Please find the attached PDF file with the specified range from the Excel file." & vbCrLf & vbCrLf & _
+                "Best regards," & vbCrLf & _
+                "Your Name"
         .Attachments.Add tempFileFullPath
         .Display ' Display the email so the user can send it manually
     End With
@@ -37,19 +42,18 @@ Sub ExportiereBereichZuMail(rangeAddress As String, recipient As String, sheetNu
     Set outlookApp = Nothing
     
     ' Optional: Delete the temporary PDF file after use
-    Kill tempFileFullPath
-    
+    ' Kill tempFileFullPath
 End Sub
 
 Sub DruckeBereich(rangeAddress As String, sheetNumber As Integer)
-    Dim worksheet As worksheet
+    Dim Worksheet As Worksheet
     Dim rangeToPrint As Range
     Dim printerName As String
     Dim printerDialog As Boolean
     
     ' Set the worksheet and range to print
-    Set worksheet = ThisWorkbook.Sheets(sheetNumber)
-    Set rangeToPrint = worksheet.Range(rangeAddress)
+    Set Worksheet = ThisWorkbook.Sheets(sheetNumber)
+    Set rangeToPrint = Worksheet.Range(rangeAddress)
     
     ' Display the print dialog to select the printer
     printerDialog = Application.Dialogs(xlDialogPrinterSetup).Show
@@ -69,7 +73,7 @@ End Sub
 
 Sub ErstelleDruckButton(rangeAddress As String, buttonCaption As String, targetCell As Range, sheetNumber As Integer)
     Dim btn As Button
-    Dim ws As worksheet
+    Dim ws As Worksheet
     Set ws = ThisWorkbook.Sheets(sheetNumber)
     
     ' Create the button at the specified cell position
@@ -82,7 +86,7 @@ End Sub
 
 Sub ErstelleButton(rangeAddress As String, recipient As String, buttonCaption As String, targetCell As Range, sheetNumber As Integer)
     Dim btn As Button
-    Dim ws As worksheet
+    Dim ws As Worksheet
     Set ws = ThisWorkbook.Sheets(sheetNumber)
     
     ' Create the button at the specified cell position
@@ -95,10 +99,10 @@ End Sub
 
 Sub ErstelleAlleButtons()
     ' Button 1: Bereich A5:C15 an empfaenger1@example.com
-    ' Position in Zelle B3, Blatt 1
+    ' Position in Zelle B3
     ErstelleButton "C5:J15", "kamaka99@gmx.de", "Senden", ThisWorkbook.Sheets(1).Range("K15"), 1
     ErstelleDruckButton "C5:J15", "Drucken", ThisWorkbook.Sheets(1).Range("K18"), 1
     
+    
     ' Weitere Buttons können hier hinzugefügt werden
 End Sub
-
