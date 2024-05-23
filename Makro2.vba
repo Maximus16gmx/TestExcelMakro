@@ -1,6 +1,6 @@
 Sub ExportRangeToPDF(rangeAddress As String, recipient As String)
-    Dim outlookApp As Object
-    Dim outlookMail As Object
+    Dim outlookApp As Outlook.Application
+    Dim outlookMail As Outlook.MailItem
     Dim worksheet As Worksheet
     Dim rangeToPrint As Range
     Dim tempFilePath As String
@@ -24,8 +24,8 @@ Sub ExportRangeToPDF(rangeAddress As String, recipient As String)
     rangeToPrint.ExportAsFixedFormat Type:=xlTypePDF, Filename:=tempFileFullPath, Quality:=xlQualityStandard, IncludeDocProperties:=True, IgnorePrintAreas:=False, OpenAfterPublish:=False
     
     ' Create an Outlook application and email
-    Set outlookApp = CreateObject("Outlook.Application")
-    Set outlookMail = outlookApp.CreateItem(0)
+    Set outlookApp = New Outlook.Application
+    Set outlookMail = outlookApp.CreateItem(olMailItem)
     
     ' Configure the email
     With outlookMail
