@@ -92,10 +92,10 @@ Sub DruckeBereich(rangeAddress As String, sheetNumber As Integer)
     End If
 End Sub
 
-Sub ErstelleButton(rangeAddress As String, recipient As String, buttonCaption As String, targetCell As Range)
+Sub ErstelleButton(rangeAddress As String, recipient As String, buttonCaption As String, targetCell As Range, sheetNumber As Integer)
     Dim btn As Button
     Dim ws As Worksheet
-    Set ws = ThisWorkbook.Sheets(1)
+    Set ws = ThisWorkbook.Sheets(sheetNumber)
     
     ' Create the button at the specified cell position
     Set btn = ws.Buttons.Add(targetCell.Left, targetCell.Top, 100, 30)
