@@ -1,6 +1,6 @@
 Sub ExportRangeToPDF(rangeAddress As String, recipient As String)
-    Dim outlookApp As Outlook.Application
-    Dim outlookMail As Outlook.MailItem
+    Dim outlookApp As Object
+    Dim outlookMail As Object
     Dim worksheet As Worksheet
     Dim rangeToPrint As Range
     Dim tempFilePath As String
@@ -24,8 +24,8 @@ Sub ExportRangeToPDF(rangeAddress As String, recipient As String)
     rangeToPrint.ExportAsFixedFormat Type:=xlTypePDF, Filename:=tempFileFullPath, Quality:=xlQualityStandard, IncludeDocProperties:=True, IgnorePrintAreas:=False, OpenAfterPublish:=False
     
     ' Create an Outlook application and email
-    Set outlookApp = New Outlook.Application
-    Set outlookMail = outlookApp.CreateItem(olMailItem)
+    Set outlookApp = CreateObject("Outlook.Application")
+    Set outlookMail = outlookApp.CreateItem(0)
     
     ' Configure the email
     With outlookMail
@@ -112,11 +112,4 @@ Sub CreateAllButtons()
     
     ' Button 2: Bereich G1:H10 an empfaenger2@example.com
     ' Position in Zelle E5
-    CreateButton "G1:H10", "empfaenger2@example.com", "Send Bereich 2", ThisWorkbook.Sheets(1).Range("E5")
-    
-    ' Druck-Button: Bereich A1:F15 drucken
-    ' Position in Zelle C3
-    CreatePrintButton "A1:F15", "Print Bereich 1", ThisWorkbook.Sheets(1).Range("C3")
-    
-    ' Weitere Buttons können hier hinzugefügt werden
-End Sub
+    CreateButton "G1:H10", "empfaenger2@example.com", "Send Bereich 2", ThisWorkbook.Sheets
