@@ -23,4 +23,20 @@ End Sub
 
 
 
+
+
+
+
+
+Private Sub Workbook_SheetDeactivate(ByVal Sh As Object)
+    Dim BlattName As String
+    BlattName = Sh.Name
+    
+    ' Überprüfen, ob das Blatt ein bestimmtes Blatt ist, das nicht ausgeblendet werden soll
+    If BlattName <> "Start" And BlattName <> "Start2" Then
+        Sh.Visible = xlSheetVeryHidden
+    End If
+End Sub
+
+
     
